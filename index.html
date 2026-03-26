@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akshay Dwivedi — Data Engineer II</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --void:     #050810;
+      --void2:    #090e1a;
+      --void3:    #0e1525;
+      --surface:  #111827;
+      --border:   rgba(255,255,255,0.06);
+      --border2:  rgba(255,255,255,0.1);
+      --text:     #C8D8EC;
+      --text-dim: #5A7090;
+      --text-mid: #8A9DB8;
+      --blue:     #3B9EFF;
+      --blue-glow:rgba(59,158,255,0.15);
+      --green:    #00E56B;
+      --green-glow:rgba(0,229,107,0.12);
+      --red:      #FF4422;
+      --red-glow: rgba(255,68,34,0.12);
+      --gold:     #FFB800;
+      --gold-glow:rgba(255,184,0,0.12);
+      --white:    #EEF4FC;
+      --mono:     'JetBrains Mono', monospace;
+      --sans:     'DM Sans', sans-serif;
+      --disp:     'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--void);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(5,8,16,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--disp); font-weight: 800; font-size: 16px;
+      letter-spacing: -0.02em; color: var(--white);
+    }
+    .nav-logo span { color: var(--blue); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: var(--disp); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--text-mid); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-cta {
+      font-family: var(--disp); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--void); background: var(--blue);
+      padding: 8px 20px; text-decoration: none; border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ─── */
+    #hero {
+      min-height: 100vh; padding-top: 56px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+
+    /* Animated dot grid background */
+    #gridCanvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      opacity: 0.55;
+    }
+
+    .hero-inner {
+      position: relative; z-index: 2;
+      padding: 0 48px; max-width: 1400px;
+    }
+
+    .hero-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--blue); margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-label::before {
+      content: '';
+      display: block; width: 40px; height: 1px; background: var(--blue);
+    }
+
+    .hero-name {
+      font-family: var(--disp); font-weight: 800;
+      font-size: clamp(64px, 9vw, 140px);
+      line-height: 0.92; letter-spacing: -0.04em;
+      color: var(--white); margin-bottom: 24px;
+    }
+    .hero-name-line2 {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+    }
+
+    .hero-role {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 40px;
+    }
+    .hero-role-title {
+      font-family: var(--disp); font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 500; color: var(--text-mid);
+      letter-spacing: -0.01em;
+    }
+    .hero-role-sep { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; }
+    .hero-role-co {
+      font-family: var(--disp); font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 700; color: var(--blue);
+    }
+
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 56px;
+    }
+    .hero-tag {
+      font-family: var(--mono); font-size: 11px; font-weight: 400;
+      letter-spacing: 0.08em;
+      border: 1px solid var(--border2);
+      padding: 5px 14px; color: var(--text-mid);
+      transition: all 0.2s;
+    }
+    .hero-tag:hover { border-color: var(--blue); color: var(--blue); }
+
+    .hero-actions { display: flex; gap: 14px; }
+    .btn-primary {
+      font-family: var(--disp); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--blue); color: var(--void);
+      padding: 14px 36px; text-decoration: none; border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-ghost {
+      font-family: var(--disp); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-mid); background: transparent;
+      padding: 14px 36px; text-decoration: none;
+      border: 1px solid var(--border2); border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--text-mid); color: var(--white); }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 48px;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text-dim); letter-spacing: 0.12em;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 2;
+    }
+    .hero-scroll::after {
+      content: '';
+      display: block; width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--text-dim), transparent);
+    }
+
+    /* ── SYSTEMS MAP ─── */
+    #map {
+      padding: 120px 48px;
+      background: var(--void2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .map-header { max-width: 1200px; margin: 0 auto 72px; }
+    .section-sup {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 16px;
+    }
+    .section-h {
+      font-family: var(--disp); font-size: clamp(32px, 4vw, 56px);
+      font-weight: 800; letter-spacing: -0.03em;
+      color: var(--white); line-height: 1.05; margin-bottom: 20px;
+    }
+    .section-sub { font-size: 17px; color: var(--text-mid); max-width: 560px; line-height: 1.65; }
+
+    .sysmap {
+      max-width: 1200px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr 80px 1fr;
+      align-items: center; gap: 0;
+    }
+    .sysmap-node {
+      padding: 28px 24px;
+      border: 1px solid var(--border2);
+      position: relative; cursor: default;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .sysmap-node:hover { background: rgba(255,255,255,0.02); }
+    .sysmap-node.green { border-color: rgba(0,229,107,0.25); }
+    .sysmap-node.green:hover { border-color: var(--green); background: var(--green-glow); }
+    .sysmap-node.red   { border-color: rgba(255,68,34,0.25); }
+    .sysmap-node.red:hover   { border-color: var(--red); background: var(--red-glow); }
+    .sysmap-node.gold  { border-color: rgba(255,184,0,0.25); }
+    .sysmap-node.gold:hover  { border-color: var(--gold); background: var(--gold-glow); }
+
+    .sysmap-arrow {
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim); font-size: 20px;
+    }
+    .arrow-line {
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, var(--border2), var(--text-dim), var(--border2));
+      position: relative;
+    }
+    .arrow-line::after {
+      content: '▶'; position: absolute; right: -8px; top: 50%;
+      transform: translateY(-50%); font-size: 10px; color: var(--text-dim);
+    }
+
+    .node-tag {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 3px 10px; margin-bottom: 14px; display: inline-block;
+    }
+    .node-tag.green { color: var(--green); background: var(--green-glow); border: 1px solid rgba(0,229,107,0.2); }
+    .node-tag.red   { color: var(--red);   background: var(--red-glow);   border: 1px solid rgba(255,68,34,0.2); }
+    .node-tag.gold  { color: var(--gold);  background: var(--gold-glow);  border: 1px solid rgba(255,184,0,0.2); }
+
+    .node-name {
+      font-family: var(--disp); font-size: 16px; font-weight: 700;
+      color: var(--white); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .node-desc { font-size: 13px; color: var(--text-mid); line-height: 1.55; }
+    .node-stack {
+      margin-top: 14px;
+      font-family: var(--mono); font-size: 10px; color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── SKILLS ─── */
+    #skills { padding: 120px 48px; }
+    .skills-inner { max-width: 1200px; margin: 0 auto; }
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; margin-top: 64px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .skill-group {
+      background: var(--void); padding: 32px 28px;
+      transition: background 0.25s;
+    }
+    .skill-group:hover { background: var(--void3); }
+    .skill-group-icon { font-size: 24px; margin-bottom: 14px; }
+    .skill-group-title {
+      font-family: var(--disp); font-size: 14px; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--white); margin-bottom: 16px;
+    }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .skill-pill {
+      font-family: var(--mono); font-size: 11px;
+      padding: 4px 10px; border-radius: 2px;
+      background: var(--void2); color: var(--text-mid);
+      border: 1px solid var(--border2);
+    }
+    .skill-pill.hi { border-color: var(--blue); color: var(--blue); background: var(--blue-glow); }
+
+    /* ── PROJECTS ─── */
+    .project-section {
+      padding: 0;
+      border-top: 1px solid var(--border);
+    }
+    .project-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+    .project-info {
+      padding: 96px 64px;
+      display: flex; flex-direction: column; justify-content: center;
+      border-right: 1px solid var(--border);
+    }
+    .project-visual {
+      padding: 64px 56px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+
+    /* k8s */
+    .project-section.k8s .project-visual { background: linear-gradient(135deg, #020f07 0%, #051a0d 100%); }
+    .project-section.k8s .proj-num { color: rgba(0,229,107,0.15); }
+    .project-section.k8s .proj-accent { color: var(--green); }
+    .project-section.k8s .proj-link { background: var(--green); color: var(--void); }
+    .project-section.k8s .proj-tag { color: var(--green); border-color: rgba(0,229,107,0.25); background: var(--green-glow); }
+    .project-section.k8s .terminal-accent { border-color: rgba(0,229,107,0.3); }
+
+    /* AROP */
+    .project-section.arop .project-visual { background: linear-gradient(135deg, #0f0302 0%, #1a0500 100%); }
+    .project-section.arop .proj-num { color: rgba(255,68,34,0.12); }
+    .project-section.arop .proj-accent { color: var(--red); }
+    .project-section.arop .proj-link { background: var(--red); color: var(--white); }
+    .project-section.arop .proj-tag { color: var(--red); border-color: rgba(255,68,34,0.25); background: var(--red-glow); }
+    .project-section.arop .terminal-accent { border-color: rgba(255,68,34,0.3); }
+
+    /* data */
+    .project-section.data .project-visual { background: linear-gradient(135deg, #0d0900 0%, #1a1000 100%); }
+    .project-section.data .proj-num { color: rgba(255,184,0,0.12); }
+    .project-section.data .proj-accent { color: var(--gold); }
+    .project-section.data .proj-link { background: var(--gold); color: var(--void); }
+    .project-section.data .proj-tag { color: var(--gold); border-color: rgba(255,184,0,0.25); background: var(--gold-glow); }
+    .project-section.data .terminal-accent { border-color: rgba(255,184,0,0.3); }
+
+    .proj-num {
+      font-family: var(--disp); font-size: 100px; font-weight: 800;
+      line-height: 1; letter-spacing: -0.05em;
+      position: absolute; top: 16px; right: 24px;
+      user-select: none; pointer-events: none;
+    }
+    .proj-eyebrow {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .proj-title {
+      font-family: var(--disp); font-size: clamp(28px, 3vw, 44px);
+      font-weight: 800; letter-spacing: -0.03em;
+      color: var(--white); line-height: 1.05; margin-bottom: 20px;
+    }
+    .proj-desc {
+      font-size: 15px; line-height: 1.7;
+      color: var(--text-mid); margin-bottom: 28px; max-width: 420px;
+    }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+    .proj-tag {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 10px; border: 1px solid;
+    }
+    .proj-links { display: flex; gap: 12px; align-items: center; }
+    .proj-link {
+      font-family: var(--disp); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 10px 24px; text-decoration: none; border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+    .proj-link:hover { opacity: 0.82; }
+    .proj-link-ghost {
+      font-family: var(--disp); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 10px 24px; text-decoration: none; border-radius: 2px;
+      color: var(--text-mid); border: 1px solid var(--border2);
+      transition: all 0.2s;
+    }
+    .proj-link-ghost:hover { border-color: var(--text-mid); color: var(--white); }
+
+    .proj-stats {
+      display: flex; gap: 32px;
+      padding-top: 28px; margin-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+    .proj-stat-num {
+      font-family: var(--disp); font-size: 28px; font-weight: 800;
+      line-height: 1; color: var(--white);
+    }
+    .proj-stat-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim); margin-top: 4px;
+    }
+
+    /* terminal block inside project visual */
+    .terminal-accent {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid;
+      padding: 20px 22px;
+      font-family: var(--mono);
+      font-size: 12px; line-height: 1.8;
+      position: relative; z-index: 1;
+    }
+    .terminal-header {
+      display: flex; gap: 7px; margin-bottom: 14px;
+      align-items: center;
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot.r { background: #FF5F57; }
+    .t-dot.y { background: #FEBC2E; }
+    .t-dot.g { background: #28C840; }
+    .t-label {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.25); margin-left: 8px;
+    }
+
+    /* Pipeline viz inside project visual */
+    .pipe-viz {
+      display: flex; flex-direction: column; gap: 8px;
+      position: relative; z-index: 1;
+    }
+    .pipe-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: border-color 0.3s;
+    }
+    .pipe-row:hover { border-color: rgba(255,255,255,0.15); }
+    .pipe-row-icon { font-size: 16px; flex-shrink: 0; }
+    .pipe-row-name {
+      font-family: var(--mono); font-size: 12px; font-weight: 500;
+      flex: 1;
+    }
+    .pipe-row-stat {
+      font-family: var(--mono); font-size: 11px;
+      color: rgba(255,255,255,0.35);
+    }
+    .pipe-connector-v {
+      width: 1px; height: 12px;
+      background: rgba(255,255,255,0.12);
+      margin-left: 24px;
+    }
+
+    /* ── ABOUT ─── */
+    #about {
+      padding: 120px 48px;
+      background: var(--void2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .about-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 96px; align-items: start;
+    }
+    .about-quote {
+      font-family: var(--disp); font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 700; letter-spacing: -0.02em;
+      color: var(--white); line-height: 1.25; margin-bottom: 32px;
+    }
+    .about-quote em { color: var(--blue); font-style: normal; }
+    .about-body { font-size: 16px; color: var(--text-mid); line-height: 1.8; }
+    .about-body p + p { margin-top: 16px; }
+
+    .about-facts { display: flex; flex-direction: column; gap: 0; }
+    .fact-row {
+      display: grid; grid-template-columns: 120px 1fr;
+      gap: 24px; padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .fact-row:first-child { border-top: 1px solid var(--border); }
+    .fact-key {
+      font-family: var(--mono); font-size: 11px; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim); padding-top: 2px;
+    }
+    .fact-val { font-size: 15px; color: var(--text); }
+    .fact-val strong { color: var(--white); font-weight: 600; }
+
+    /* ── CONTACT ─── */
+    #contact {
+      padding: 120px 48px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    #contact::before {
+      content: 'CONNECT';
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-family: var(--disp); font-size: clamp(100px, 18vw, 220px);
+      font-weight: 800; letter-spacing: -0.06em;
+      color: rgba(255,255,255,0.015);
+      white-space: nowrap; pointer-events: none; user-select: none;
+    }
+    .contact-inner { max-width: 700px; margin: 0 auto; position: relative; z-index: 1; }
+    .contact-sup { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); margin-bottom: 20px; }
+    .contact-h {
+      font-family: var(--disp); font-size: clamp(36px, 5vw, 72px);
+      font-weight: 800; letter-spacing: -0.04em;
+      color: var(--white); line-height: 1; margin-bottom: 24px;
+    }
+    .contact-sub { font-size: 17px; color: var(--text-mid); margin-bottom: 48px; }
+    .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .contact-link {
+      font-family: var(--disp); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px;
+      padding: 14px 32px; transition: all 0.2s;
+    }
+    .contact-link.primary { background: var(--blue); color: var(--void); }
+    .contact-link.primary:hover { opacity: 0.85; }
+    .contact-link.ghost { border: 1px solid var(--border2); color: var(--text-mid); }
+    .contact-link.ghost:hover { border-color: var(--white); color: var(--white); }
+
+    /* ── FOOTER ─── */
+    footer {
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-name {
+      font-family: var(--disp); font-size: 14px; font-weight: 700;
+      color: var(--text-dim); letter-spacing: -0.01em;
+    }
+    .footer-name span { color: var(--blue); }
+    .footer-copy { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+
+    /* ── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .rd1 { transition-delay: 0.1s; }
+    .rd2 { transition-delay: 0.2s; }
+    .rd3 { transition-delay: 0.3s; }
+    .rd4 { transition-delay: 0.4s; }
+
+    @media (max-width: 960px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero, #map, #skills, #about, #contact { padding-left: 24px; padding-right: 24px; }
+      .hero-inner { padding: 0 24px; }
+      footer { padding: 24px; }
+      .sysmap { grid-template-columns: 1fr; gap: 24px; }
+      .sysmap-arrow { display: none; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .project-inner { grid-template-columns: 1fr; }
+      .project-info { padding: 56px 32px; border-right: none; border-bottom: 1px solid var(--border); }
+      .project-visual { padding: 40px 32px; }
+      .about-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">A<span>.</span>Dwivedi</div>
+  <ul class="nav-links">
+    <li><a href="#map">Systems</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="https://github.com/Akshay007724" class="nav-cta" target="_blank" rel="noopener">GitHub</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="gridCanvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-label">Data Engineer · Systems Architect · AI Infrastructure</div>
+    <h1 class="hero-name">
+      Akshay<br>
+      <span class="hero-name-line2">Dwivedi</span>
+    </h1>
+    <div class="hero-role">
+      <span class="hero-role-title">Data Engineer II</span>
+      <span class="hero-role-sep"></span>
+      <span class="hero-role-co">William Blair</span>
+    </div>
+    <div class="hero-tags" id="heroTags"></div>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="https://github.com/Akshay007724" class="btn-ghost" target="_blank" rel="noopener">GitHub Profile</a>
+    </div>
+  </div>
+  <div class="hero-scroll">scroll</div>
+</section>
+
+<!-- SYSTEMS MAP -->
+<section id="map">
+  <div class="map-header reveal">
+    <div class="section-sup">Systems Overview</div>
+    <h2 class="section-h">Three platforms.<br>One engineering philosophy.</h2>
+    <p class="section-sub">Every project is production-grade, async-first, and designed for enterprise reliability. Each solves a distinct layer of the modern data + AI stack.</p>
+  </div>
+  <div class="sysmap">
+    <div class="sysmap-node green reveal">
+      <span class="node-tag green">Infra Layer</span>
+      <div class="node-name">K8s Log Intelligence</div>
+      <div class="node-desc">Diagnoses Kubernetes pod failures in &lt;2s. THINK→ACT→OBSERVE→DECIDE loop with MCP server fanout.</div>
+      <div class="node-stack">FastAPI · kubernetes-asyncio · Docker · RBAC</div>
+    </div>
+    <div class="sysmap-arrow reveal rd1">
+      <div class="arrow-line"></div>
+    </div>
+    <div class="sysmap-node red reveal rd2">
+      <span class="node-tag red">Reliability Layer</span>
+      <div class="node-name">AROP</div>
+      <div class="node-desc">Validates every agent action in real-time. Guardrails, structured traces, failure scoring, automated recovery.</div>
+      <div class="node-stack">FastAPI · aiosqlite · Guardrails · ReAct</div>
+    </div>
+    <div class="sysmap-arrow reveal rd3">
+      <div class="arrow-line"></div>
+    </div>
+    <div class="sysmap-node gold reveal rd4">
+      <span class="node-tag gold">Data Layer</span>
+      <div class="node-name">Financial Data Platform</div>
+      <div class="node-desc">Real-time financial data pipelines for equity research and trading analytics. Petabyte-scale at William Blair.</div>
+      <div class="node-stack">Spark · Kafka · Airflow · dbt · Snowflake</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-inner">
+    <div class="reveal">
+      <div class="section-sup">Technical Skills</div>
+      <h2 class="section-h">Built from production<br>experience.</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group reveal rd1">
+        <div class="skill-group-icon">⚡</div>
+        <div class="skill-group-title">Data Engineering</div>
+        <div class="skill-pills" id="spData"></div>
+      </div>
+      <div class="skill-group reveal rd2">
+        <div class="skill-group-icon">🐍</div>
+        <div class="skill-group-title">Languages & APIs</div>
+        <div class="skill-pills" id="spLang"></div>
+      </div>
+      <div class="skill-group reveal rd3">
+        <div class="skill-group-icon">☸️</div>
+        <div class="skill-group-title">Infrastructure</div>
+        <div class="skill-pills" id="spInfra"></div>
+      </div>
+      <div class="skill-group reveal rd4">
+        <div class="skill-group-icon">🛡️</div>
+        <div class="skill-group-title">AI &amp; Reliability</div>
+        <div class="skill-pills" id="spAI"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<div id="projects">
+
+  <!-- K8s Log Intelligence -->
+  <div class="project-section k8s">
+    <div class="project-inner">
+      <div class="project-info">
+        <div class="proj-eyebrow proj-accent">Project 01 · Infrastructure</div>
+        <h3 class="proj-title">Kubernetes Log<br>Intelligence</h3>
+        <p class="proj-desc">Diagnoses Kubernetes pod failures — OOMKilled, CrashLoopBackOff, ImagePullBackOff, DependencyTimeout — in under 2 seconds. A K-Agent orchestrator fans out to three MCP servers in parallel, compresses context into &lt;120-token shards, and returns a structured fix with 0.9+ confidence.</p>
+        <div class="proj-tags" id="k8sTags"></div>
+        <div class="proj-links">
+          <a href="https://akshay007724.github.io/k8s-log-intelligence" class="proj-link" target="_blank" rel="noopener">Live Demo</a>
+          <a href="https://github.com/Akshay007724/k8s-log-intelligence" class="proj-link-ghost" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+        <div class="proj-stats">
+          <div><div class="proj-stat-num proj-accent">&lt;2s</div><div class="proj-stat-label">Diagnosis time</div></div>
+          <div><div class="proj-stat-num proj-accent">24</div><div class="proj-stat-label">Tests passing</div></div>
+          <div><div class="proj-stat-num proj-accent">5</div><div class="proj-stat-label">Failure types</div></div>
+        </div>
+      </div>
+      <div class="project-visual">
+        <div class="proj-num">01</div>
+        <div class="terminal-accent" id="k8sTerminal">
+          <div class="terminal-header">
+            <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
+            <span class="t-label">diagnose · payment-svc</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AROP -->
+  <div class="project-section arop">
+    <div class="project-inner" style="direction:rtl;">
+      <div class="project-info" style="direction:ltr;">
+        <div class="proj-eyebrow proj-accent">Project 02 · AI Reliability</div>
+        <h3 class="proj-title">Agent Reliability &amp;<br>Observability Platform</h3>
+        <p class="proj-desc">Production-grade safety layer for AI agents. Validates every action through a guardrail engine, persists structured traces to SQLite, scores failure patterns, and triggers automated recovery — all within a 2-second budget. Detects prompt injection, PII leaks, tool misuse, and infinite loops.</p>
+        <div class="proj-tags" id="aropTags"></div>
+        <div class="proj-links">
+          <a href="https://akshay007724.github.io/arop" class="proj-link" target="_blank" rel="noopener">Live Demo</a>
+          <a href="https://github.com/Akshay007724/arop" class="proj-link-ghost" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+        <div class="proj-stats">
+          <div><div class="proj-stat-num proj-accent">&lt;2s</div><div class="proj-stat-label">Eval latency</div></div>
+          <div><div class="proj-stat-num proj-accent">43</div><div class="proj-stat-label">Tests passing</div></div>
+          <div><div class="proj-stat-num proj-accent">3</div><div class="proj-stat-label">Recovery modes</div></div>
+        </div>
+      </div>
+      <div class="project-visual" style="direction:ltr;">
+        <div class="proj-num" style="left:24px;right:auto;">02</div>
+        <div class="pipe-viz" id="aropPipe"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Platform -->
+  <div class="project-section data">
+    <div class="project-inner">
+      <div class="project-info">
+        <div class="proj-eyebrow proj-accent">Project 03 · Data Platform</div>
+        <h3 class="proj-title">Financial Data<br>Platform</h3>
+        <p class="proj-desc">Real-time and batch data pipelines for equity research, trading analytics, and risk reporting at William Blair. End-to-end ELT with Apache Spark, Kafka event streaming, Airflow orchestration, and dbt transformations — serving petabyte-scale financial datasets with sub-second query latency.</p>
+        <div class="proj-tags" id="dataTags"></div>
+        <div class="proj-links">
+          <a href="https://github.com/Akshay007724" class="proj-link" target="_blank" rel="noopener">GitHub Profile</a>
+        </div>
+        <div class="proj-stats">
+          <div><div class="proj-stat-num proj-accent">PB</div><div class="proj-stat-label">Data scale</div></div>
+          <div><div class="proj-stat-num proj-accent">&lt;1s</div><div class="proj-stat-label">Query latency</div></div>
+          <div><div class="proj-stat-num proj-accent">100%</div><div class="proj-stat-label">Pipeline uptime</div></div>
+        </div>
+      </div>
+      <div class="project-visual">
+        <div class="proj-num">03</div>
+        <div class="pipe-viz" id="dataPipe"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="reveal">
+      <p class="about-quote">
+        I build systems that make<br>
+        <em>data and AI trustworthy</em><br>
+        at enterprise scale.
+      </p>
+      <div class="about-body">
+        <p>As a Data Engineer II at William Blair, I work at the intersection of large-scale financial data infrastructure and AI reliability — designing systems that are fast, observable, and safe.</p>
+        <p>My projects span the full stack: Kubernetes observability platforms that diagnose production incidents in milliseconds, agent safety frameworks that prevent AI systems from going off the rails, and real-time data pipelines that power equity research and trading decisions.</p>
+        <p>I believe great engineering is about reducing uncertainty — whether that's a crashing pod, a hallucinating AI, or a slow query. Every system I build has a clear answer to: <em>what is happening, why, and how do we fix it.</em></p>
+      </div>
+    </div>
+    <div class="about-facts reveal rd2" id="aboutFacts"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <div class="contact-sup">Get In Touch</div>
+    <h2 class="contact-h">Let's build<br>something.</h2>
+    <p class="contact-sub">Open to conversations about data infrastructure, AI reliability, and systems engineering.</p>
+    <div class="contact-links">
+      <a href="https://github.com/Akshay007724" class="contact-link primary" target="_blank" rel="noopener">GitHub →</a>
+      <a href="https://linkedin.com/in/akshaydwivedi" class="contact-link ghost" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">Akshay<span>.</span>Dwivedi</div>
+  <div class="footer-copy">Data Engineer II · William Blair</div>
+</footer>
+
+<script>
+// ── SAFE ELEMENT BUILDERS ─────────────────────────────────────────────────
+function el(tag, cls) { const e = document.createElement(tag); if (cls) e.className = cls; return e; }
+function span(cls, text) { const s = el('span', cls); s.textContent = text; return s; }
+function div(cls, text) { const d = el('div', cls); if (text !== undefined) d.textContent = text; return d; }
+function a(cls, href, text, target) {
+  const e = el('a', cls); e.href = href; e.textContent = text;
+  if (target) { e.target = target; e.rel = 'noopener'; }
+  return e;
+}
+
+// ── HERO TAGS ─────────────────────────────────────────────────────────────
+const heroTagData = [
+  'Apache Spark','Apache Kafka','Kubernetes','FastAPI',
+  'Python','dbt','Snowflake','Docker','Airflow','AI Observability','SQLite','Pydantic'
+];
+const heroTagsEl = document.getElementById('heroTags');
+heroTagData.forEach(t => {
+  const pill = div('hero-tag', t);
+  heroTagsEl.appendChild(pill);
+});
+
+// ── SKILL PILLS ───────────────────────────────────────────────────────────
+const SKILLS = {
+  spData: [
+    { t:'Apache Spark', hi:true }, { t:'Apache Kafka', hi:true }, { t:'Apache Airflow', hi:true },
+    { t:'dbt', hi:true }, { t:'Snowflake' }, { t:'BigQuery' }, { t:'Apache Iceberg' },
+    { t:'ETL / ELT' }, { t:'Stream Processing' }, { t:'Data Modeling' },
+  ],
+  spLang: [
+    { t:'Python', hi:true }, { t:'SQL', hi:true }, { t:'FastAPI', hi:true },
+    { t:'Pydantic v2' }, { t:'asyncio' }, { t:'httpx' }, { t:'PySpark' },
+    { t:'Bash' }, { t:'YAML' },
+  ],
+  spInfra: [
+    { t:'Kubernetes', hi:true }, { t:'Docker', hi:true }, { t:'Helm' },
+    { t:'RBAC' }, { t:'ConfigMaps' }, { t:'GitHub Actions' },
+    { t:'aiosqlite' }, { t:'kubernetes-asyncio' },
+  ],
+  spAI: [
+    { t:'AI Agent Orchestration', hi:true }, { t:'Guardrails', hi:true },
+    { t:'Prompt Injection Detection' }, { t:'ReAct Loops' },
+    { t:'MCP Servers' }, { t:'Failure Analysis' }, { t:'Observability' },
+    { t:'SQLite Trace Store' },
+  ],
+};
+
+Object.entries(SKILLS).forEach(([id, pills]) => {
+  const container = document.getElementById(id);
+  if (!container) return;
+  pills.forEach(p => {
+    const pill = span('skill-pill' + (p.hi ? ' hi' : ''), p.t);
+    container.appendChild(pill);
+  });
+});
+
+// ── PROJECT TAGS ──────────────────────────────────────────────────────────
+function buildTags(containerId, tags) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  tags.forEach(t => { const s = span('proj-tag', t); c.appendChild(s); });
+}
+
+buildTags('k8sTags', ['Python','FastAPI','Kubernetes','asyncio','Docker','RBAC','MCP','Pydantic']);
+buildTags('aropTags', ['Python','FastAPI','SQLite','Guardrails','ReAct','aiosqlite','Pydantic','Docker','K8s']);
+buildTags('dataTags', ['Apache Spark','Kafka','Airflow','dbt','Snowflake','Python','SQL','BigQuery']);
+
+// ── K8S TERMINAL ──────────────────────────────────────────────────────────
+const k8sLines = [
+  { text: '$ curl -X POST /diagnose \\', color: 'rgba(255,255,255,0.5)' },
+  { text: '    -d \'{"service":"payment-svc"}\'', color: 'rgba(255,255,255,0.35)' },
+  { text: '', color: '' },
+  { text: '// THINK → fetching pod status + logs', color: 'rgba(0,229,107,0.45)' },
+  { text: '// ACT  → 2 MCP calls parallel (1.1s)', color: 'rgba(0,229,107,0.45)' },
+  { text: '// OBSERVE → shards compressed ✓', color: 'rgba(0,229,107,0.45)' },
+  { text: '// DECIDE → OOMKilled (confidence 0.95)', color: 'rgba(0,229,107,0.45)' },
+  { text: '', color: '' },
+  { text: '{ "issue_type": "OOMKilled",', color: '#00E56B' },
+  { text: '  "confidence": 0.95,', color: 'rgba(255,255,255,0.7)' },
+  { text: '  "suggested_fix": "kubectl set resources', color: 'rgba(255,255,255,0.7)' },
+  { text: '    --limits=memory=512Mi" }', color: 'rgba(255,255,255,0.7)' },
+];
+
+const k8sTerm = document.getElementById('k8sTerminal');
+k8sLines.forEach(line => {
+  if (!line.text) { k8sTerm.appendChild(document.createElement('br')); return; }
+  const s = span('', line.text);
+  s.style.cssText = 'display:block; color:' + line.color + '; font-size:11.5px; line-height:1.7;';
+  k8sTerm.appendChild(s);
+});
+
+// ── AROP PIPELINE VIZ ─────────────────────────────────────────────────────
+const aropStages = [
+  { icon:'🧠', name:'agent_weaver', stat:'THINK → ACT → OBSERVE → DECIDE', color:'rgba(255,68,34,0.7)' },
+  { icon:'🛡️', name:'guardrail_engine', stat:'injection=0  pii=0  whitelist=✓', color:'rgba(255,68,34,0.55)' },
+  { icon:'📋', name:'trace_collector', stat:'risk_score=0.05  written=✓', color:'rgba(255,68,34,0.45)' },
+  { icon:'📊', name:'failure_analysis', stat:'failure_score=0.04  patterns=[]', color:'rgba(255,68,34,0.35)' },
+  { icon:'✅', name:'recovery_agent', stat:'agent_status="safe"', color:'rgba(255,68,34,0.7)' },
+];
+
+const aropPipe = document.getElementById('aropPipe');
+aropStages.forEach((s, i) => {
+  const row = div('pipe-row');
+  const icon = span('pipe-row-icon', s.icon);
+  const name = div('pipe-row-name', s.name);
+  name.style.color = s.color;
+  name.style.fontFamily = 'var(--mono)';
+  name.style.fontSize = '12px';
+  const stat = div('pipe-row-stat', s.stat);
+  row.appendChild(icon); row.appendChild(name); row.appendChild(stat);
+  aropPipe.appendChild(row);
+  if (i < aropStages.length - 1) {
+    aropPipe.appendChild(div('pipe-connector-v'));
+  }
+});
+
+// ── DATA PIPELINE VIZ ─────────────────────────────────────────────────────
+const dataStages = [
+  { icon:'📡', name:'Kafka Topics', stat:'real-time  ·  1M msg/s', color:'rgba(255,184,0,0.7)' },
+  { icon:'⚡', name:'Apache Spark', stat:'streaming  ·  batch jobs', color:'rgba(255,184,0,0.6)' },
+  { icon:'🔀', name:'Airflow DAGs', stat:'orchestration  ·  scheduling', color:'rgba(255,184,0,0.5)' },
+  { icon:'🔧', name:'dbt Models', stat:'transformations  ·  tests', color:'rgba(255,184,0,0.45)' },
+  { icon:'❄️', name:'Snowflake', stat:'query latency &lt;1s  ·  PB scale', color:'rgba(255,184,0,0.7)' },
+];
+
+const dataPipe = document.getElementById('dataPipe');
+dataStages.forEach((s, i) => {
+  const row = div('pipe-row');
+  const icon = span('pipe-row-icon', s.icon);
+  const name = div('pipe-row-name', s.name);
+  name.style.color = s.color;
+  name.style.fontFamily = 'var(--mono)';
+  name.style.fontSize = '12px';
+  const stat = div('pipe-row-stat', s.stat);
+  row.appendChild(icon); row.appendChild(name); row.appendChild(stat);
+  dataPipe.appendChild(row);
+  if (i < dataStages.length - 1) {
+    dataPipe.appendChild(div('pipe-connector-v'));
+  }
+});
+
+// ── ABOUT FACTS ───────────────────────────────────────────────────────────
+const facts = [
+  { key: 'Role',     val: 'Data Engineer II' },
+  { key: 'Company',  val: 'William Blair' },
+  { key: 'Focus',    val: 'Data platforms · AI reliability · K8s infra' },
+  { key: 'Stack',    val: 'Python · Spark · Kafka · Kubernetes · FastAPI' },
+  { key: 'Projects', val: '3 production-grade open-source systems' },
+  { key: 'Tests',    val: '67 tests passing across all projects' },
+];
+
+const factsEl = document.getElementById('aboutFacts');
+facts.forEach(f => {
+  const row = div('fact-row');
+  const key = div('fact-key', f.key);
+  const val = div('fact-val');
+  val.textContent = f.val;
+  row.appendChild(key); row.appendChild(val);
+  factsEl.appendChild(row);
+});
+
+// ── ANIMATED DOT GRID CANVAS ──────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('gridCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let W, H, nodes = [], animId;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    initNodes();
+  }
+
+  function initNodes() {
+    nodes = [];
+    const cols = Math.ceil(W / 80) + 1;
+    const rows = Math.ceil(H / 80) + 1;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        nodes.push({
+          x: c * 80,
+          y: r * 80,
+          opacity: Math.random() * 0.4 + 0.05,
+          speed: Math.random() * 0.008 + 0.003,
+          phase: Math.random() * Math.PI * 2,
+          pulse: Math.random() > 0.92,
+        });
+      }
+    }
+  }
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.012;
+
+    // Draw connections
+    nodes.forEach(n => {
+      if (!n.pulse) return;
+      const osc = (Math.sin(t * n.speed * 60 + n.phase) + 1) / 2;
+      if (osc < 0.3) return;
+      nodes.forEach(m => {
+        if (m === n) return;
+        const dx = m.x - n.x, dy = m.y - n.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist > 160) return;
+        ctx.beginPath();
+        ctx.moveTo(n.x, n.y);
+        ctx.lineTo(m.x, m.y);
+        const alpha = (1 - dist / 160) * osc * 0.12;
+        ctx.strokeStyle = 'rgba(59,158,255,' + alpha.toFixed(3) + ')';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      });
+    });
+
+    // Draw dots
+    nodes.forEach(n => {
+      const osc = (Math.sin(t * n.speed * 40 + n.phase) + 1) / 2;
+      const alpha = n.opacity * (0.4 + osc * 0.6);
+      const size = n.pulse ? (1.5 + osc * 2) : 1.2;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, size, 0, Math.PI * 2);
+      if (n.pulse) {
+        ctx.fillStyle = 'rgba(59,158,255,' + (alpha * 1.5).toFixed(3) + ')';
+      } else {
+        ctx.fillStyle = 'rgba(255,255,255,' + alpha.toFixed(3) + ')';
+      }
+      ctx.fill();
+    });
+
+    animId = requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(animId);
+    resize();
+    draw();
+  });
+
+  resize();
+  draw();
+})();
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
