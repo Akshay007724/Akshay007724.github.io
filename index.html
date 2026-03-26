@@ -44,7 +44,8 @@
       width: 22px; height: 22px;
       pointer-events: none;
       z-index: 9999;
-      transform: translate(-50%,-50%);
+      top: 0; left: 0;
+      will-change: transform;
     }
     #cur::before, #cur::after {
       content: '';
@@ -61,9 +62,10 @@
       border: 1px solid var(--ink);
       pointer-events: none;
       z-index: 9998;
-      transform: translate(-50%,-50%);
+      top: 0; left: 0;
       opacity: .4;
-      transition: opacity .3s, transform .15s;
+      will-change: transform;
+      transition: opacity .3s;
     }
 
     /* ── Loader ─────────────────────────────────── */
@@ -989,11 +991,11 @@
 
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
-    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+    cur.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
   });
   (function raf() {
-    rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
-    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    rx += (mx - rx) * 0.25; ry += (my - ry) * 0.25;
+    ring.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
     requestAnimationFrame(raf);
   })();
 
