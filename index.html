@@ -621,6 +621,54 @@
       to   { opacity:1; transform:translateY(0); }
     }
 
+    /* ── Canvas ─────────────────────────────────── */
+    #bg-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    nav, section, footer, #achieve, #loader, #cur, #cur-ring {
+      position: relative; z-index: 1;
+    }
+
+    /* ── Scan line ───────────────────────────────── */
+    .scan-line {
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(194,139,10,.9) 50%, transparent 100%);
+      z-index: 10; pointer-events: none;
+      animation: scanDown 2s cubic-bezier(.4,0,.2,1) .8s forwards;
+    }
+    @keyframes scanDown {
+      from { top: 0; opacity: 1; }
+      to   { top: 100%; opacity: 0; }
+    }
+
+    /* ── Glitch ──────────────────────────────────── */
+    .player-name { position: relative; }
+    @keyframes glitch-clip {
+      0%,100% { opacity: 0; }
+      15%  { clip-path: inset(15% 0 55% 0); opacity: .7; transform: translateX(-4px); }
+      30%  { clip-path: inset(55% 0 10% 0); opacity: .7; transform: translateX( 4px); }
+      45%  { clip-path: inset(30% 0 35% 0); opacity: .5; transform: translateX(-2px); }
+      60%  { opacity: 0; }
+    }
+    .glitch-over {
+      position: absolute; inset: 0;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: clamp(68px, 11.5vw, 152px);
+      line-height: .88;
+      letter-spacing: -.01em;
+      color: var(--gold-lt);
+      pointer-events: none;
+      animation: glitch-clip .5s steps(1) forwards;
+    }
+
+    /* ── Scramble chars ──────────────────────────── */
+    .sc { color: var(--gold); opacity: .55; }
+
     /* ── Responsive ─────────────────────────────── */
     @media (max-width: 960px) {
       nav { padding: 18px 28px; }
@@ -1070,6 +1118,196 @@
     '42 dbt models with automated data quality scoring',
     'Airflow DAG orchestration with SLA monitoring',
   ]);
+
+  // ── Network canvas background ──────────────────
+  const cvs = document.createElement('canvas');
+  cvs.id = 'bg-canvas';
+  document.body.insertBefore(cvs, document.body.firstChild);
+  const cx = cvs.getContext('2d');
+  let CW, CH, pts;
+
+  function resizeCvs() {
+    CW = cvs.width  = window.innerWidth;
+    CH = cvs.height = window.innerHeight;
+  }
+  function initPts() {
+    pts = Array.from({ length: 55 }, () => ({
+      x:  Math.random() * CW,
+      y:  Math.random() * CH,
+      vx: (Math.random() - .5) * .35,
+      vy: (Math.random() - .5) * .35,
+      r:  Math.random() * 1.4 + .4,
+    }));
+  }
+  resizeCvs(); initPts();
+  window.addEventListener('resize', () => { resizeCvs(); initPts(); });
+
+  // Traveling pulses along edges
+  let pulses = [];
+  setInterval(() => {
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        if (Math.sqrt(dx*dx + dy*dy) < 160 && Math.random() < .04) {
+          pulses.push({ a: i, b: j, t: 0, spd: .018 + Math.random() * .018 });
+          return;
+        }
+      }
+    }
+  }, 600);
+
+  function drawCvs() {
+    cx.clearRect(0, 0, CW, CH);
+
+    // Move nodes
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > CW) p.vx *= -1;
+      if (p.y < 0 || p.y > CH) p.vy *= -1;
+    });
+
+    // Edges
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 160) {
+          cx.beginPath();
+          cx.moveTo(pts[i].x, pts[i].y);
+          cx.lineTo(pts[j].x, pts[j].y);
+          cx.strokeStyle = `rgba(194,139,10,${(1 - d/160) * .09})`;
+          cx.lineWidth = .6;
+          cx.stroke();
+        }
+      }
+    }
+
+    // Pulses
+    pulses = pulses.filter(p => p.t < 1);
+    pulses.forEach(p => {
+      p.t += p.spd;
+      const ax = pts[p.a].x, ay = pts[p.a].y;
+      const bx = pts[p.b].x, by = pts[p.b].y;
+      const px = ax + (bx - ax) * p.t;
+      const py = ay + (by - ay) * p.t;
+      const grd = cx.createRadialGradient(px, py, 0, px, py, 6);
+      grd.addColorStop(0, `rgba(232,176,32,${(1 - p.t) * .9})`);
+      grd.addColorStop(1, 'rgba(232,176,32,0)');
+      cx.beginPath();
+      cx.arc(px, py, 6, 0, Math.PI * 2);
+      cx.fillStyle = grd;
+      cx.fill();
+    });
+
+    // Nodes
+    pts.forEach(p => {
+      cx.beginPath();
+      cx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      cx.fillStyle = 'rgba(194,139,10,0.22)';
+      cx.fill();
+    });
+
+    requestAnimationFrame(drawCvs);
+  }
+  drawCvs();
+
+  // ── Scan line on hero card ─────────────────────
+  const profCard = document.querySelector('.profile-card');
+  if (profCard) {
+    profCard.style.overflow = 'hidden';
+    const sl = document.createElement('div');
+    sl.className = 'scan-line';
+    profCard.appendChild(sl);
+  }
+
+  // ── Count-up on profile stats ──────────────────
+  function countUp(el, target, suffix, ms = 1600) {
+    const isFloat = !Number.isInteger(target);
+    let start = null;
+    (function step(ts) {
+      if (!start) start = ts;
+      const ease = 1 - Math.pow(1 - Math.min((ts - start) / ms, 1), 3);
+      el.textContent = (isFloat ? (target * ease).toFixed(1) : Math.floor(target * ease)) + suffix;
+      if (ease < 1) requestAnimationFrame(step);
+    })(performance.now());
+  }
+
+  const statsSection = document.querySelector('.profile-stats');
+  if (statsSection) {
+    new IntersectionObserver((entries, o) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        o.disconnect();
+        document.querySelectorAll('.ps-num').forEach(el => {
+          const raw = el.textContent.trim();
+          const num = parseFloat(raw.replace(/[^\d.]/g, ''));
+          const suf = raw.replace(/[\d.]/g, '');
+          el.textContent = '0' + suf;
+          countUp(el, num, suf);
+        });
+      });
+    }, { threshold: .6 }).observe(statsSection);
+  }
+
+  // ── Text scramble on mission titles ────────────
+  const SCHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?#>[]{}|_-=';
+
+  function scrambleTextNode(node, originalText, delay) {
+    const len = originalText.length;
+    const frames = 36;
+    const startF = Array.from({length: len}, (_, i) => Math.floor(i / len * frames * .5));
+    const endF   = Array.from({length: len}, (_, i) => startF[i] + Math.floor(Math.random() * 14 + 8));
+    let f = 0;
+
+    setTimeout(() => {
+      (function tick() {
+        let out = '';
+        let done = 0;
+        for (let i = 0; i < len; i++) {
+          const ch = originalText[i];
+          if (ch === ' ' || ch === '\n') { out += ch; done++; continue; }
+          if (f >= endF[i])  { out += ch; done++; }
+          else if (f >= startF[i]) { out += SCHARS[Math.floor(Math.random() * SCHARS.length)]; }
+          else { out += ch; }
+        }
+        node.textContent = out;
+        f++;
+        if (done < len) requestAnimationFrame(tick);
+        else node.textContent = originalText;
+      })();
+    }, delay);
+  }
+
+  const missionObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      missionObs.unobserve(e.target);
+      const titleEl = e.target.querySelector('.mission-title');
+      if (!titleEl) return;
+      const walker = document.createTreeWalker(titleEl, NodeFilter.SHOW_TEXT);
+      let node, delay = 0;
+      while ((node = walker.nextNode())) {
+        const orig = node.textContent;
+        if (orig.trim()) { scrambleTextNode(node, orig, delay); delay += 120; }
+      }
+    });
+  }, { threshold: .3 });
+
+  document.querySelectorAll('.mission-card').forEach(el => missionObs.observe(el));
+
+  // ── Glitch pulse on player name ─────────────────
+  const nameEl = document.querySelector('.player-name');
+  if (nameEl) {
+    function fireGlitch() {
+      const g = document.createElement('div');
+      g.className = 'glitch-over';
+      g.textContent = nameEl.textContent;
+      nameEl.appendChild(g);
+      setTimeout(() => g.remove(), 520);
+      setTimeout(fireGlitch, 4000 + Math.random() * 4000);
+    }
+    setTimeout(fireGlitch, 3000);
+  }
 </script>
 </body>
 </html>
