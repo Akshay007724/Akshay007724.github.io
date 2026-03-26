@@ -319,6 +319,20 @@
       padding: 36px 32px;
       border-right: 1px solid var(--border);
     }
+    .mission-title-link {
+      text-decoration: none;
+      color: inherit;
+      display: inline-block;
+    }
+    .mission-title-link:hover .mission-title {
+      color: var(--gold);
+    }
+    .mission-title-link:hover .mission-title::after {
+      content: ' ↗';
+      font-size: .45em;
+      vertical-align: super;
+      opacity: .7;
+    }
     .mission-title {
       font-family: 'Rajdhani', sans-serif;
       font-weight: 700;
@@ -791,7 +805,7 @@
     </div>
     <div class="mission-body">
       <div class="mission-main">
-        <div class="mission-title">Kubernetes Log<br>Intelligence</div>
+        <a href="https://github.com/Akshay007724/k8s-log-intelligence" class="mission-title-link" target="_blank" rel="noopener"><div class="mission-title">Kubernetes Log<br>Intelligence</div></a>
         <p class="mission-desc">An autonomous K-Agent that diagnoses Kubernetes failures in under 2 seconds. A THINK → ACT → OBSERVE → DECIDE loop dispatches up to 3 MCP tools — pod status, logs, metrics — and converges on root cause with a gravity-weighted confidence score.</p>
         <div class="objectives" id="obj1"></div>
       </div>
@@ -831,7 +845,7 @@
     </div>
     <div class="mission-body">
       <div class="mission-main">
-        <div class="mission-title">Agent Reliability<br>&amp; Observability</div>
+        <a href="https://github.com/Akshay007724/arop" class="mission-title-link" target="_blank" rel="noopener"><div class="mission-title">Agent Reliability<br>&amp; Observability</div></a>
         <p class="mission-desc">A platform that makes AI agents safe and observable in production. A guardrail engine catches prompt injection, PII exposure, and unauthorized tool use before execution. Every decision is traced, scored, and recoverable via a ReAct loop.</p>
         <div class="objectives" id="obj2"></div>
       </div>
@@ -871,7 +885,7 @@
     </div>
     <div class="mission-body">
       <div class="mission-main">
-        <div class="mission-title">Data Platform<br>Helm</div>
+        <a href="https://github.com/Akshay007724/data-platform-helm" class="mission-title-link" target="_blank" rel="noopener"><div class="mission-title">Data Platform<br>Helm</div></a>
         <p class="mission-desc">A production-grade Helm chart deploying a full data engineering stack on Kubernetes — Kafka, Flink, Airflow, and autoscaling microservices — plus a nested Document Processor with hybrid BM25 + vector search and a locally-hosted LLM for private document Q&amp;A.</p>
         <div class="objectives" id="obj3"></div>
       </div>
