@@ -871,27 +871,27 @@
   <!-- Mission 003 -->
   <div class="mission-card framed">
     <div class="panel-bar">
-      <span>MISSION_003 &nbsp;·&nbsp; FINANCIAL_DATA_PLATFORM</span>
+      <span>MISSION_003 &nbsp;·&nbsp; DATA_PLATFORM_HELM</span>
       <span style="color:var(--teal)">▣ COMPLETE</span>
     </div>
     <div class="mission-body">
       <div class="mission-main">
-        <div class="mission-title">Financial Data<br>Platform</div>
-        <p class="mission-desc">End-to-end data infrastructure for a global investment firm. Ingestion pipelines processing market data at scale, Spark transformations, 42 dbt models, and Airflow orchestration — built for the reliability financial markets demand.</p>
+        <div class="mission-title">Data Platform<br>Helm</div>
+        <p class="mission-desc">A production-grade Helm chart deploying a full data engineering stack on Kubernetes — Kafka, Flink, Airflow, and autoscaling microservices — plus a nested Document Processor with hybrid BM25 + vector search and a locally-hosted LLM for private document Q&amp;A.</p>
         <div class="objectives" id="obj3"></div>
       </div>
       <div class="mission-intel">
         <div class="intel-item">
           <div class="intel-k">Mission Type</div>
-          <div class="intel-v">Data Engineering / Infrastructure</div>
+          <div class="intel-v">Helm / K8s Infrastructure + AI Search</div>
         </div>
         <div class="intel-item">
           <div class="intel-k">Stack</div>
-          <div class="intel-v">Spark · dbt · Airflow · Snowflake</div>
+          <div class="intel-v">Kafka · Flink · Airflow · ChromaDB · Ollama</div>
         </div>
         <div class="intel-item">
-          <div class="intel-k">Scale</div>
-          <div class="intel-v">14M+ rows per pipeline run</div>
+          <div class="intel-k">Deployment</div>
+          <div class="intel-v">Flux GitOps · GitHub Actions · GHCR</div>
         </div>
         <div class="intel-item">
           <div class="intel-k">Complexity</div>
@@ -901,8 +901,8 @@
           </div>
         </div>
         <div class="intel-item">
-          <div class="intel-k">Data Quality</div>
-          <div class="intel-v" style="color:var(--teal)">99.7% score</div>
+          <div class="intel-k">Autoscaling</div>
+          <div class="intel-v" style="color:var(--teal)">2–20 replicas (HPA)</div>
         </div>
       </div>
     </div>
@@ -1113,10 +1113,10 @@
   ]);
 
   buildObjectives('obj3', [
-    'Market data ingestion from NYSE and NASDAQ feeds',
-    '14M+ row Spark transformations per pipeline run',
-    '42 dbt models with automated data quality scoring',
-    'Airflow DAG orchestration with SLA monitoring',
+    'Helm chart: Kafka 3-broker cluster, Flink operator, Airflow KubernetesExecutor',
+    'Custom microservices with HPA (2–20 replicas on CPU/memory)',
+    'Document Processor: hybrid BM25 + ChromaDB vector search with RRF reranking',
+    'Local LLM (Qwen2.5 via Ollama) for private RAG with streaming SSE responses',
   ]);
 
   // ── Network canvas background ──────────────────
