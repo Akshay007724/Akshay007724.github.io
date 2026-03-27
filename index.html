@@ -877,6 +877,46 @@
     </div>
   </div>
 
+  <!-- Mission 004 -->
+  <div class="mission-card framed">
+    <div class="panel-bar">
+      <span>MISSION_004 &nbsp;·&nbsp; DATA_PLATFORM_V2</span>
+      <span style="color:var(--teal)">▣ COMPLETE</span>
+    </div>
+    <div class="mission-body">
+      <div class="mission-main">
+        <a href="https://github.com/Akshay007724/data-platform-v2" class="mission-title-link" target="_blank" rel="noopener"><div class="mission-title">Data Platform<br>v2</div></a>
+        <p class="mission-desc">A Kubernetes-native streaming data platform with an Ollama-powered LLM layer. Kafka → Spark → Apache Iceberg → DuckDB — with natural-language analytics (NL→SQL→chart), K-Agents THINK→ACT→DECIDE orchestration, and an Analytics Studio dashboard. 21 tests, zero external deps at test time.</p>
+        <div class="objectives" id="obj4"></div>
+      </div>
+      <div class="mission-intel">
+        <div class="intel-item">
+          <div class="intel-k">Mission Type</div>
+          <div class="intel-v">Streaming Data Platform + LLM Analytics</div>
+        </div>
+        <div class="intel-item">
+          <div class="intel-k">Stack</div>
+          <div class="intel-v">Kafka · Spark · Iceberg · DuckDB · Ollama · MinIO</div>
+        </div>
+        <div class="intel-item">
+          <div class="intel-k">Deployment</div>
+          <div class="intel-v">Kubernetes · Docker Compose · make up</div>
+        </div>
+        <div class="intel-item">
+          <div class="intel-k">Complexity</div>
+          <div class="intel-v">
+            HIGH
+            <div class="diff-bar"><div class="diff-fill" style="width:82%"></div></div>
+          </div>
+        </div>
+        <div class="intel-item">
+          <div class="intel-k">Live Site</div>
+          <div class="intel-v" style="color:var(--teal)"><a href="https://Akshay007724.github.io/data-platform-v2" target="_blank" rel="noopener" style="color:inherit">github.io/data-platform-v2</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Mission 003 -->
   <div class="mission-card framed">
     <div class="panel-bar">
@@ -1118,6 +1158,13 @@
     'Async SQLite trace collector with aiosqlite',
     'ReAct loop with RETRY / SWITCH_STRATEGY / ESCALATE',
     'Pattern scoring failure classifier with confidence output',
+  ]);
+
+  buildObjectives('obj4', [
+    'Kafka KRaft (no ZooKeeper) → Spark Structured Streaming → Iceberg on MinIO',
+    'LLM agent: NL→SQL→execute→chart-recommend via Ollama / llama3.2',
+    'K-Agents: 6 agents, parallel schema+partition, THINK→ACT→DECIDE loop',
+    '21 pytest tests — mocked Ollama, DuckDB, schema inference, API endpoints',
   ]);
 
   buildObjectives('obj3', [
